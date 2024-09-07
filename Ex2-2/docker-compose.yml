@@ -1,0 +1,10 @@
+services:
+    logger:
+        image: devopsdockeruh/simple-web-service
+        volumes: 
+          - ./text.log:/usr/src/app/text.log
+        container_name: web-service-ex2.2
+        ports:
+          - 8080:8080
+        command: >
+          sh -c "server"

@@ -1,0 +1,12 @@
+FROM ubuntu:latest
+EXPOSE 8080
+ENV PATH="/usr/local/go/bin:$PATH"
+ENV REQUEST_ORIGIN=http://localhost:80
+
+WORKDIR /usr/src
+COPY material-applications/example-backend .
+
+RUN apt-get update && apt-get install wget -y && rm -rf /usr/local/go && wget -c https://go.dev/dl/go1.16.15.linux-amd64.tar.gz && tar -C /usr/local -xzf go1.16.15.linux-amd64.tar.gz && go build && useradd -m appuser && apt-get purge -y --auto-remove curl && rm -rf /var/lib/apt/lists/*
+
+USER appuser
+CMD ./server

@@ -1,0 +1,15 @@
+FROM golang:1.16-alpine as build-stage
+WORKDIR /usr/home
+
+COPY material-applications/example-backend .
+RUN go build
+
+
+FROM golang:1.16-alpine
+ENV REQUEST_ORIGIN=http://localhost:5000
+EXPOSE 8080
+WORKDIR /usr/home
+
+COPY --from=build-stage /usr/home/server /usr/home/server
+RUN adduser -D appuser && chown appuser .
+CMD ./server
